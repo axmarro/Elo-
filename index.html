@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuestra Historia ❤️</title>
+
+<style>
+
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:Arial;
+color:white;
+text-align:center;
+overflow:hidden;
+background:black;
+}
+
+/* estrellas */
+
+.star{
+position:absolute;
+color:white;
+animation:twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle{
+from{opacity:0.2;}
+to{opacity:1;}
+}
+
+/* carta */
+
+.carta{
+position:relative;
+background:rgba(0,0,0,0.65);
+padding:40px;
+border-radius:20px;
+max-width:600px;
+box-shadow:0 0 40px rgba(255,0,100,0.5);
+z-index:5;
+}
+
+img{
+width:230px;
+border-radius:15px;
+margin-bottom:20px;
+box-shadow:0 0 20px rgba(255,255,255,0.6);
+}
+
+button{
+margin-top:20px;
+padding:12px 20px;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+background:#ff4e7a;
+color:white;
+}
+
+/* corazones */
+
+.heart{
+position:absolute;
+bottom:-20px;
+animation:float 7s linear infinite;
+}
+
+@keyframes float{
+0%{
+transform:translateY(0);
+opacity:1;
+}
+100%{
+transform:translateY(-110vh);
+opacity:0;
+}
+}
+
+/* rosas */
+
+.rose{
+position:absolute;
+top:-20px;
+animation:fall 8s linear infinite;
+}
+
+@keyframes fall{
+0%{transform:translateY(0);}
+100%{transform:translateY(110vh);}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="carta">
+
+<img src="TU_FOTO_AQUI.jpg">
+
+<h1>Para el amor de mi vida ❤️</h1>
+
+<p>
+Desde que llegaste a mi vida todo cambió para mejor.
+Cada momento contigo es un recuerdo que guardo en mi corazón.
+</p>
+
+<p>
+No importa dónde estemos o qué pase,
+mientras esté contigo sé que todo estará bien.
+</p>
+
+<p>
+Eres mi felicidad, mi paz y la persona con la que quiero construir todo.
+Te amo más de lo que las palabras pueden explicar.
+</p>
+
+<h3>⏳ Tiempo que llevamos juntos:</h3>
+<p id="contador"></p>
+
+<button onclick="mensaje()">Aprieta aquí ❤️</button>
+
+</div>
+
+<audio autoplay loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3">
+</audio>
+
+<script>
+
+/* FECHA DE INICIO DE RELACION */
+const inicio = new Date("2025-08-23")
+
+function actualizarTiempo(){
+
+const ahora = new Date()
+const diferencia = ahora - inicio
+
+const dias = Math.floor(diferencia / (1000*60*60*24))
+const horas = Math.floor((diferencia/(1000*60*60)) % 24)
+const minutos = Math.floor((diferencia/(1000*60)) % 60)
+
+document.getElementById("contador").innerHTML =
+dias + " días " + horas + " horas " + minutos + " minutos ❤️"
+
+}
+
+setInterval(actualizarTiempo,1000)
+
+/* mensaje sorpresa */
+
+function mensaje(){
+alert("Te amo muchísimo ❤️ Gracias por estar conmigo.")
+}
+
+/* estrellas */
+
+for(let i=0;i<120;i++){
+let star=document.createElement("div")
+star.className="star"
+star.innerHTML="✦"
+star.style.left=Math.random()*100+"vw"
+star.style.top=Math.random()*100+"vh"
+star.style.fontSize=(Math.random()*4+2)+"px"
+document.body.appendChild(star)
+}
+
+/* corazones */
+
+setInterval(()=>{
+let heart=document.createElement("div")
+heart.className="heart"
+heart.innerHTML="❤️"
+heart.style.left=Math.random()*100+"vw"
+heart.style.fontSize=(Math.random()*20+10)+"px"
+document.body.appendChild(heart)
+
+setTimeout(()=>heart.remove(),7000)
+
+},300)
+
+/* rosas */
+
+setInterval(()=>{
+let rose=document.createElement("div")
+rose.className="rose"
+rose.innerHTML="🌹"
+rose.style.left=Math.random()*100+"vw"
+rose.style.fontSize=(Math.random()*20+15)+"px"
+document.body.appendChild(rose)
+
+setTimeout(()=>rose.remove(),8000)
+
+},600)
+
+</script>
+
+</body>
+</html>

@@ -66,14 +66,8 @@ bottom:-20px;
 animation:float 7s linear infinite;
 }
 @keyframes float{
-0%{
-transform:translateY(0);
-opacity:1;
-}
-100%{
-transform:translateY(-110vh);
-opacity:0;
-}
+0%{transform:translateY(0); opacity:1;}
+100%{transform:translateY(-110vh); opacity:0;}
 }
 
 /* rosas */
@@ -87,7 +81,7 @@ animation:fall 8s linear infinite;
 100%{transform:translateY(110vh);}
 }
 
-/* --- ESTILOS VENTANA CONTRASEÑA --- */
+/* --- VENTANA DE CONTRASEÑA --- */
 #passwordModal {
 position: fixed;
 top: 0;
@@ -99,12 +93,6 @@ display: flex;
 justify-content: center;
 align-items: center;
 z-index: 1000;
-animation: fadeInModal 0.8s ease;
-}
-
-@keyframes fadeInModal {
-from {opacity: 0;}
-to {opacity: 1;}
 }
 
 #passwordModalContent {
@@ -118,62 +106,71 @@ transform: scale(0);
 animation: popIn 0.6s forwards;
 }
 
-@keyframes popIn {
-to {transform: scale(1);}
-}
+@keyframes popIn { to {transform: scale(1);} }
 
-#passwordModalContent img {
-width: 60px;
-margin-bottom: 20px;
-transition: transform 0.5s ease;
-}
+#lockIcon { width: 60px; margin-bottom: 20px; transition: transform 1s ease; }
+#lockIcon.open { transform: rotateX(180deg); }
 
-#passwordInput {
-padding: 12px;
-width: 80%;
-margin-bottom: 20px;
-border: 2px solid #ff6b6b;
-border-radius: 10px;
-font-size: 16px;
-outline: none;
-transition: border-color 0.3s;
+#passwordInput{
+padding:12px; width:80%; margin-bottom:20px;
+border:2px solid #ff6b6b; border-radius:10px; font-size:16px;
+outline:none; transition:border-color 0.3s;
 }
-#passwordInput:focus {
-border-color: #ff4757;
+#passwordInput:focus{border-color:#ff4757;}
+#submitPassword{
+padding:12px 25px; background:#ff6b6b; color:white;
+border:none; border-radius:10px; cursor:pointer; font-size:16px;
+transition:background 0.3s;
 }
+#submitPassword:hover{background:#ff4757;}
+#errorMsg{color:red; margin-top:10px; display:none; font-weight:bold;}
 
-#submitPassword {
-padding: 12px 25px;
-background: #ff6b6b;
-color: white;
-border: none;
-border-radius: 10px;
-cursor: pointer;
-font-size: 16px;
-transition: background 0.3s;
-}
-#submitPassword:hover {
-background: #ff4757;
-}
-
-#errorMsg {
-color: red;
-margin-top: 10px;
-display: none;
-font-weight: bold;
-}
-
-/* Contenido oculto */
-#content {
-display: none;
-text-align: center;
+/* CONTENIDO OCULTO */
+#content{
+display:none;
+text-align:center;
 animation: fadeInContent 1.2s ease-in;
 }
-
-@keyframes fadeInContent {
-from {opacity: 0; transform: translateY(20px);}
-to {opacity: 1; transform: translateY(0);}
+@keyframes fadeInContent{
+from{opacity:0; transform:translateY(20px);}
+to{opacity:1; transform:translateY(0);}
 }
+
+/* --- POPUP SLIDESHOW --- */
+#slideshowModal {
+position: fixed;
+top:0; left:0; width:100%; height:100%;
+background: rgba(0,0,0,0.85);
+display: none; justify-content:center; align-items:center;
+z-index:2000; overflow:hidden;
+}
+
+#slideshowContent {
+position: relative;
+background: rgba(0,0,0,0.65);
+padding: 30px;
+border-radius: 20px;
+max-width: 600px;
+text-align:center;
+overflow:hidden;
+}
+
+#slideshowContent img{
+width:100%; border-radius:15px;
+box-shadow:0 0 20px rgba(255,255,255,0.6);
+opacity:0; transition: opacity 1s ease-in-out;
+}
+
+#slideshowContent img.active{opacity:1;}
+
+/* cerrar slideshow */
+.closeBtn{
+position:absolute; top:10px; right:15px;
+color:white; font-size:24px; cursor:pointer;
+}
+
+/* estrellas y corazones en slideshow */
+#slideshowModal .star, #slideshowModal .heart{ z-index:1000; }
 </style>
 </head>
 
@@ -182,7 +179,7 @@ to {opacity: 1; transform: translateY(0);}
 <!-- VENTANA CONTRASEÑA -->
 <div id="passwordModal">
   <div id="passwordModalContent">
-    <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="candado">
+    <img id="lockIcon" src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="candado">
     <h2>Introduce la contraseña</h2>
     <input type="password" id="passwordInput" placeholder="Tu contraseña">
     <br>
@@ -210,7 +207,7 @@ Te amo más de lo que las palabras pueden explicar.
 </p>
 <h3>⏳ Tiempo que llevamos juntos:</h3>
 <p id="contador"></p>
-<button onclick="mensaje()">Aprieta aquí ❤️</button>
+<button id="openSlideshow">Aprieta aquí ❤️</button>
 </div>
 
 <audio autoplay loop>
@@ -218,78 +215,139 @@ Te amo más de lo que las palabras pueden explicar.
 </audio>
 </div>
 
+<!-- POPUP SLIDESHOW -->
+<div id="slideshowModal">
+  <div id="slideshowContent">
+    <span class="closeBtn">&times;</span>
+    <!-- Fotos se agregan dinámicamente -->
+  </div>
+</div>
+
 <script>
 /* ---------- CONTRASEÑA ---------- */
-const password = "miamor123"; // Cambia la contraseña
+const password = "miamor123"; 
 const modal = document.getElementById("passwordModal");
 const content = document.getElementById("content");
 const submitButton = document.getElementById("submitPassword");
 const errorMsg = document.getElementById("errorMsg");
+const lockIcon = document.getElementById("lockIcon");
 
-submitButton.addEventListener("click", () => {
+submitButton.addEventListener("click", ()=>{
   const input = document.getElementById("passwordInput").value;
-  if(input === password){
-    modal.style.display = "none";
-    content.style.display = "block";
-  } else {
-    errorMsg.style.display = "block";
-  }
+  if(input===password){
+    lockIcon.classList.add("open");
+    setTimeout(()=>{ modal.style.display="none"; content.style.display="block"; },1000);
+  } else { errorMsg.style.display="block"; }
 });
-document.getElementById("passwordInput").addEventListener("keyup", (e) => {
-  if(e.key === "Enter"){ submitButton.click(); }
-});
+document.getElementById("passwordInput").addEventListener("keyup",(e)=>{ if(e.key==="Enter") submitButton.click(); });
 
-/* ---------- FECHA DE INICIO DE RELACION ---------- */
-const inicio = new Date("2025-08-23");
+/* ---------- FECHA ---------- */
+const inicio=new Date("2025-08-23");
 function actualizarTiempo(){
-const ahora = new Date()
-const diferencia = ahora - inicio
-const dias = Math.floor(diferencia / (1000*60*60*24))
-const horas = Math.floor((diferencia/(1000*60*60)) % 24)
-const minutos = Math.floor((diferencia/(1000*60)) % 60)
-document.getElementById("contador").innerHTML =
-dias + " días " + horas + " horas " + minutos + " minutos ❤️"
+const ahora=new Date();
+const diferencia=ahora-inicio;
+const dias=Math.floor(diferencia/(1000*60*60*24));
+const horas=Math.floor((diferencia/(1000*60*60))%24);
+const minutos=Math.floor((diferencia/(1000*60))%60);
+document.getElementById("contador").innerHTML=dias+" días "+horas+" horas "+minutos+" minutos ❤️";
 }
-setInterval(actualizarTiempo,1000)
+setInterval(actualizarTiempo,1000);
 
-/* ---------- MENSAJE SORPRESA ---------- */
-function mensaje(){
-alert("Te amo muchísimo ❤️ Gracias por estar conmigo.")
-}
+/* ---------- MENSAJE ---------- */
+function mensaje(){ alert("Te amo muchísimo ❤️ Gracias por estar conmigo."); }
 
 /* ---------- ESTRELLAS ---------- */
 for(let i=0;i<120;i++){
-let star=document.createElement("div")
-star.className="star"
-star.innerHTML="✦"
-star.style.left=Math.random()*100+"vw"
-star.style.top=Math.random()*100+"vh"
-star.style.fontSize=(Math.random()*4+2)+"px"
-document.body.appendChild(star)
+let star=document.createElement("div");
+star.className="star";
+star.innerHTML="✦";
+star.style.left=Math.random()*100+"vw";
+star.style.top=Math.random()*100+"vh";
+star.style.fontSize=(Math.random()*4+2)+"px";
+document.body.appendChild(star);
 }
 
 /* ---------- CORAZONES ---------- */
 setInterval(()=>{
-let heart=document.createElement("div")
-heart.className="heart"
-heart.innerHTML="❤️"
-heart.style.left=Math.random()*100+"vw"
-heart.style.fontSize=(Math.random()*20+10)+"px"
-document.body.appendChild(heart)
-setTimeout(()=>heart.remove(),7000)
-},300)
+let heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="❤️";
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=(Math.random()*20+10)+"px";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),7000);
+},300);
 
 /* ---------- ROSAS ---------- */
 setInterval(()=>{
-let rose=document.createElement("div")
-rose.className="rose"
-rose.innerHTML="🌹"
-rose.style.left=Math.random()*100+"vw"
-rose.style.fontSize=(Math.random()*20+15)+"px"
-document.body.appendChild(rose)
-setTimeout(()=>rose.remove(),8000)
-},600)
+let rose=document.createElement("div");
+rose.className="rose";
+rose.innerHTML="🌹";
+rose.style.left=Math.random()*100+"vw";
+rose.style.fontSize=(Math.random()*20+15)+"px";
+document.body.appendChild(rose);
+setTimeout(()=>rose.remove(),8000);
+},600);
 
+/* ---------- SLIDESHOW ---------- */
+const slideshowModal=document.getElementById("slideshowModal");
+const slideshowContent=document.getElementById("slideshowContent");
+const closeBtn=document.querySelector(".closeBtn");
+const openBtn=document.getElementById("openSlideshow");
+
+// fotos
+const fotos=["nosotros1.jpg","nosotros2.jpg","nosotros3.jpg","nosotros4.jpg"];
+let index=0;
+let shuffleInterval;
+
+// crear img elementos y agregarlos al slideshow
+fotos.forEach((src,i)=>{
+  const img=document.createElement("img");
+  img.src=src;
+  if(i===0) img.classList.add("active");
+  slideshowContent.appendChild(img);
+});
+
+const slides=slideshowContent.querySelectorAll("img");
+
+openBtn.addEventListener("click",()=>{
+  slideshowModal.style.display="flex";
+  index=0;
+  slides.forEach((s,i)=>s.classList.remove("active"));
+  slides[index].classList.add("active");
+
+  // agregar estrellas y corazones dentro del slideshow
+  for(let i=0;i<50;i++){
+    let star=document.createElement("div");
+    star.className="star";
+    star.innerHTML="✦";
+    star.style.left=Math.random()*100+"%";
+    star.style.top=Math.random()*100+"%";
+    star.style.fontSize=(Math.random()*3+2)+"px";
+    slideshowModal.appendChild(star);
+  }
+  for(let i=0;i<20;i++){
+    let heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="❤️";
+    heart.style.left=Math.random()*100+"%";
+    heart.style.fontSize=(Math.random()*15+10)+"px";
+    slideshowModal.appendChild(heart);
+  }
+
+  shuffleInterval=setInterval(()=>{
+    slides[index].classList.remove("active");
+    index=Math.floor(Math.random()*slides.length);
+    slides[index].classList.add("active");
+  },2000);
+});
+
+closeBtn.addEventListener("click",()=>{
+  slideshowModal.style.display="none";
+  clearInterval(shuffleInterval);
+  // remover estrellas y corazones del slideshow
+  slideshowModal.querySelectorAll(".star, .heart").forEach(e=>e.remove());
+});
 </script>
 </body>
 </html>

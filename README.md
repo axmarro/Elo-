@@ -1,2 +1,0 @@
-# Elo-
-Para mi chiquita

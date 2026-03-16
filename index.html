@@ -6,6 +6,7 @@
 <title>Mi chiquita ❤️</title>
 
 <style>
+
 body{
 margin:0;
 min-height:100vh;
@@ -19,18 +20,21 @@ overflow-x:hidden;
 background:black;
 }
 
-/* estrellas */
+/* estrellas /
+
 .star{
 position:absolute;
 color:white;
 animation:twinkle 2s infinite alternate;
 }
+
 @keyframes twinkle{
 from{opacity:0.2;}
 to{opacity:1;}
 }
 
-/* carta */
+/ carta /
+
 .carta{
 position:relative;
 background:rgba(0,0,0,0.65);
@@ -48,6 +52,8 @@ margin-bottom:20px;
 box-shadow:0 0 20px rgba(255,255,255,0.6);
 }
 
+/ botones /
+
 button{
 margin-top:20px;
 padding:12px 20px;
@@ -59,48 +65,39 @@ background:#ff4e7a;
 color:white;
 }
 
-/* corazones */
+/ corazones flotando /
+
 .heart{
 position:absolute;
 bottom:-20px;
 animation:float 7s linear infinite;
 }
+
 @keyframes float{
 0%{transform:translateY(0); opacity:1;}
 100%{transform:translateY(-110vh); opacity:0;}
 }
 
-/* rosas */
-.rose{
-position:absolute;
-top:-20px;
-animation:fall 8s linear infinite;
-}
-@keyframes fall{
-0%{transform:translateY(0);}
-100%{transform:translateY(110vh);}
+/ contraseña /
+
+#passwordModal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:1000;
 }
 
-/* contraseña */
-#passwordModal {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background: rgba(0,0,0,0.7);
-display: flex;
-justify-content: center;
-align-items: center;
-z-index: 1000;
-}
-
-#passwordModalContent {
-background: #fff0f5;
-padding: 50px 40px;
-border-radius: 20px;
-text-align: center;
-box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+#passwordModalContent{
+background:#fff0f5;
+padding:50px 40px;
+border-radius:20px;
+text-align:center;
 }
 
 #passwordInput{
@@ -125,18 +122,14 @@ color:red;
 display:none;
 }
 
-/* contenido oculto */
+/ contenido oculto /
+
 #content{
 display:none;
-animation:fadeIn 1s;
 }
 
-@keyframes fadeIn{
-from{opacity:0;}
-to{opacity:1;}
-}
+/ slideshow /
 
-/* slideshow */
 #slideshowModal{
 position:fixed;
 top:0;
@@ -155,12 +148,22 @@ position:relative;
 max-width:500px;
 }
 
+/ fotos /
+
 #slideshowContent img{
 width:100%;
 border-radius:15px;
 opacity:0;
 position:absolute;
 transition:opacity 1s;
+box-shadow:0 0 30px #ff4e7a;
+animation:glow 3s infinite;
+}
+
+@keyframes glow{
+0%{box-shadow:0 0 20px #ff4e7a;}
+50%{box-shadow:0 0 60px #ff9bb3;}
+100%{box-shadow:0 0 20px #ff4e7a;}
 }
 
 #slideshowContent img.active{
@@ -168,20 +171,56 @@ opacity:1;
 position:relative;
 }
 
+/ video cinematic /
+
+#slideshowContent video{
+width:100%;
+border-radius:15px;
+opacity:0;
+position:absolute;
+transform:scale(0.9);
+transition:opacity 1.2s, transform 1.2s;
+box-shadow:0 0 40px #ff4e7a;
+}
+
+#slideshowContent video.active{
+opacity:1;
+position:relative;
+transform:scale(1);
+}
+
+/ cerrar /
+
 .closeBtn{
 position:absolute;
 top:-30px;
 right:-10px;
 font-size:30px;
 cursor:pointer;
-color:white;
 }
+
+/ corazones del slideshow /
+
+.slideHeart{
+position:absolute;
+bottom:-20px;
+font-size:22px;
+animation:slideHeartFloat 6s linear infinite;
+}
+
+@keyframes slideHeartFloat{
+0%{transform:translateY(0);opacity:0;}
+20%{opacity:1;}
+100%{transform:translateY(-100vh);opacity:0;}
+}
+
 </style>
 </head>
 
 <body>
 
 <!-- contraseña -->
+
 <div id="passwordModal">
 <div id="passwordModalContent">
 <h2>Introduce la contraseña</h2>
@@ -193,6 +232,7 @@ color:white;
 </div>
 
 <!-- contenido -->
+
 <div id="content">
 <div class="carta">
 
@@ -200,20 +240,9 @@ color:white;
 
 <h1>Para mi chiquita ❤️</h1>
 
-<p>
-Desde que llegaste a mi vida todo cambió para mejor.
-Cada momento contigo es un recuerdo que guardo en mi corazón.
-</p>
-
-<p>
-No importa dónde este o qué pase,
-mientras esté contigo sé que todo estará bien.
-</p>
-
-<p>
-Me haces muy feliz, eres mi paz y la persona con la que quiero construir todo.
-Te amo más de lo que las palabras pueden explicar.
-</p>
+<p>Desde que llegaste a mi vida todo cambió para mejor.</p>
+<p>No importa dónde esté, mientras esté contigo todo está bien.</p>
+<p>Te amo más de lo que las palabras pueden explicar.</p>
 
 <h3>⏳ Tiempo que llevamos juntos:</h3>
 <p id="contador"></p>
@@ -224,15 +253,16 @@ Te amo más de lo que las palabras pueden explicar.
 </div>
 
 <!-- slideshow -->
+
 <div id="slideshowModal">
 <div id="slideshowContent">
-<span class="closeBtn">&times;</span>
+<span class="closeBtn">×</span>
 </div>
 </div>
 
 <script>
 
-/* contraseña */
+/ contraseña /
 
 const password="miamor123";
 const modal=document.getElementById("passwordModal");
@@ -249,58 +279,55 @@ document.getElementById("errorMsg").style.display="block";
 }
 };
 
-/* contador */
+/ contador /
 
 const inicio=new Date("2025-08-23");
 
 function actualizarTiempo(){
-
 const ahora=new Date();
 const diff=ahora-inicio;
 
-const dias=Math.floor(diff/(1000*60*60*24));
-const horas=Math.floor((diff/(1000*60*60))%24);
-const minutos=Math.floor((diff/(1000*60))%60);
+const dias=Math.floor(diff/(1000606024));
+const horas=Math.floor((diff/(10006060))%24);
+const minutos=Math.floor((diff/(100060))%60);
 
 document.getElementById("contador").innerHTML=
 dias+" días "+horas+" horas "+minutos+" minutos ❤️";
 }
 
+actualizarTiempo();
 setInterval(actualizarTiempo,1000);
 
-/* estrellas */
+/ estrellas */
 
 for(let i=0;i<120;i++){
-
 let star=document.createElement("div");
 star.className="star";
 star.innerHTML="✦";
-
 star.style.left=Math.random()*100+"vw";
-star.style.top=Math.random()*100+"vh";
-
+star.style.top=Math.random()100+"vh";
 document.body.appendChild(star);
 }
 
-/* corazones */
+/ corazones */
 
 setInterval(()=>{
-
 let heart=document.createElement("div");
 heart.className="heart";
 heart.innerHTML="❤️";
-
-heart.style.left=Math.random()*100+"vw";
-
+heart.style.left=Math.random()100+"vw";
 document.body.appendChild(heart);
-
 setTimeout(()=>heart.remove(),7000);
-
 },400);
 
-/* slideshow */
+/ slideshow /
 
-const fotos=["foto1.JPG","foto2.JPG","foto3.JPG"];
+const slidesData=[
+{type:"img",src:"foto1.JPG"},
+{type:"img",src:"foto2.JPG"},
+{type:"img",src:"foto3.JPG"},
+{type:"video",src:"video.mp4"}
+];
 
 const slideshowContent=document.getElementById("slideshowContent");
 const slideshowModal=document.getElementById("slideshowModal");
@@ -310,26 +337,59 @@ const closeBtn=document.querySelector(".closeBtn");
 let index=0;
 let interval;
 
-/* crear imágenes */
+/ crear slides /
 
-fotos.forEach((src,i)=>{
+slidesData.forEach((item,i)=>{
 
-let img=document.createElement("img");
-img.src=src;
+let element;
 
-if(i===0){
-img.classList.add("active");
+if(item.type==="img"){
+element=document.createElement("img");
+element.src=item.src;
 }
 
-slideshowContent.appendChild(img);
+if(item.type==="video"){
+element=document.createElement("video");
+element.src=item.src;
+element.controls=true;
+}
+
+if(i===0){
+element.classList.add("active");
+}
+
+slideshowContent.appendChild(element);
 
 });
 
-const slides=document.querySelectorAll("#slideshowContent img");
+const slides=document.querySelectorAll("#slideshowContent img, #slideshowContent video");
+
+/ corazones slideshow */
+
+let heartInterval;
+
+function startSlideHearts(){
+heartInterval=setInterval(()=>{
+let heart=document.createElement("div");
+heart.className="slideHeart";
+heart.innerHTML="💖";
+heart.style.left=Math.random()100+"vw";
+slideshowModal.appendChild(heart);
+setTimeout(()=>heart.remove(),6000);
+},300);
+}
+
+function stopSlideHearts(){
+clearInterval(heartInterval);
+}
+
+/ abrir slideshow /
 
 openBtn.onclick=()=>{
 
 slideshowModal.style.display="flex";
+
+startSlideHearts();
 
 index=0;
 
@@ -340,23 +400,50 @@ interval=setInterval(()=>{
 
 slides[index].classList.remove("active");
 
-index=(index+1)%slides.length;
+index++;
+
+if(index>=slides.length){
+
+clearInterval(interval);
+
+slides[index-1].classList.add("active");
+
+let vid=slides[index-1];
+
+if(vid.tagName==="VIDEO"){
+vid.play();
+}
+
+return;
+
+}
 
 slides[index].classList.add("active");
 
-},2000);
+},2500);
 
 };
+
+/ cerrar */
 
 closeBtn.onclick=()=>{
 
 slideshowModal.style.display="none";
 
+stopSlideHearts();
+
 clearInterval(interval);
+
+slides.forEach(s=>{
+if(s.tagName==="VIDEO"){
+s.pause();
+s.currentTime=0;
+}
+});
 
 };
 
 </script>
 
 </body>
-</html>
+</

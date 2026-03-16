@@ -145,13 +145,16 @@ z-index:2000;
 
 #slideshowContent{
 position:relative;
-max-width:500px;
+width:90%;
+max-width:420px;
 }
 
 / fotos /
 
 #slideshowContent img{
 width:100%;
+max-height:70vh;
+object-fit:contain;
 border-radius:15px;
 opacity:0;
 position:absolute;
@@ -175,6 +178,8 @@ position:relative;
 
 #slideshowContent video{
 width:100%;
+max-height:70vh;
+object-fit:contain;
 border-radius:15px;
 opacity:0;
 position:absolute;
@@ -199,7 +204,7 @@ font-size:30px;
 cursor:pointer;
 }
 
-/ corazones del slideshow /
+/ corazones slideshow /
 
 .slideHeart{
 position:absolute;
@@ -219,8 +224,6 @@ animation:slideHeartFloat 6s linear infinite;
 
 <body>
 
-<!-- contraseña -->
-
 <div id="passwordModal">
 <div id="passwordModalContent">
 <h2>Introduce la contraseña</h2>
@@ -230,8 +233,6 @@ animation:slideHeartFloat 6s linear infinite;
 <p id="errorMsg">Contraseña incorrecta</p>
 </div>
 </div>
-
-<!-- contenido -->
 
 <div id="content">
 <div class="carta">
@@ -251,8 +252,6 @@ animation:slideHeartFloat 6s linear infinite;
 
 </div>
 </div>
-
-<!-- slideshow -->
 
 <div id="slideshowModal">
 <div id="slideshowContent">
@@ -337,8 +336,6 @@ const closeBtn=document.querySelector(".closeBtn");
 let index=0;
 let interval;
 
-/ crear slides /
-
 slidesData.forEach((item,i)=>{
 
 let element;
@@ -383,7 +380,7 @@ function stopSlideHearts(){
 clearInterval(heartInterval);
 }
 
-/ abrir slideshow /
+/ abrir slideshow */
 
 openBtn.onclick=()=>{
 
@@ -424,8 +421,6 @@ slides[index].classList.add("active");
 
 };
 
-/ cerrar */
-
 closeBtn.onclick=()=>{
 
 slideshowModal.style.display="none";
@@ -446,4 +441,4 @@ s.currentTime=0;
 </script>
 
 </body>
-</
+</h
